@@ -194,7 +194,6 @@
   }
   .flying-card {
       position: absolute;
-      /* Timings increased to 0.61s as requested in v43 */
       transition: top 0.61s ease-in-out, left 0.61s ease-in-out;
       z-index: 1000;
       box-shadow: 5px 5px 15px rgba(0,0,0,0.4) !important;
@@ -362,21 +361,7 @@ let isRoundOver = false;
 let lastDrawnCardId = null; 
 let interactionLock = false; 
 
-/* --- DOM --- */
-const elPlayerHand = document.getElementById('player-hand');
-const elCpuHand = document.getElementById('computer-hand');
-const elStock = document.getElementById('stock-pile');
-const elDiscard = document.getElementById('discard-pile');
-const elTable = document.querySelector('.table-center'); 
-const elOverlay = document.getElementById('status-overlay');
-const elOverlayTitle = document.getElementById('overlay-title');
-const elOverlayContent = document.getElementById('overlay-content');
-const elOverlayBtn = document.getElementById('overlay-btn');
-const elStatusBox = document.getElementById('status-box');
-const btnKnock = document.getElementById('btn-knock');
-const elToast = document.getElementById('toast');
-
-/* --- PWA: REGISTER SERVICE WORKER --- */
+/* --- PWA: SERVICE WORKER REGISTRATION --- */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
@@ -686,7 +671,7 @@ function animateCpuStockDraw() {
         flyer.remove();
         cpuHand.push(cardData);
         setTimeout(cpuDecideDiscard, 500);
-    }, 660); // 660ms timeout to match 0.61s CSS
+    }, 660); 
 }
 
 // === ANIMATION: CPU Pickup Discard ===
@@ -718,7 +703,7 @@ function animateCpuPickup() {
         flyer.remove();
         cpuHand.push(cardData);
         setTimeout(cpuDecideDiscard, 500);
-    }, 660); // 660ms timeout
+    }, 660); 
 }
 
 // === CPU Logic for Discarding ===
@@ -776,7 +761,7 @@ function animateCpuDiscard(cardData, onComplete) {
     setTimeout(() => {
         flyer.remove();
         onComplete();
-    }, 660); // 660ms timeout
+    }, 660);
 }
 
 
@@ -1015,6 +1000,39 @@ function createCardDiv(card) {
 }
 
 resetGame();
+
+/* --- IOS INSTALLATION INSTRUCTION LOGIC (Bottom of Script) --- */
+const isIos = () => {
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  return /iphone|ipad|ipod/.test( userAgent );
+}
+
+const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+if (isIos() && !isInStandaloneMode()) {
+  let iosToast = document.createElement('div');
+  iosToast.style.position = 'fixed';
+  iosToast.style.bottom = '20px';
+  iosToast.style.left = '50%';
+  iosToast.style.transform = 'translateX(-50%)';
+  iosToast.style.backgroundColor = 'white';
+  iosToast.style.color = 'black';
+  iosToast.style.padding = '15px';
+  iosToast.style.borderRadius = '10px';
+  iosToast.style.boxShadow = '0 4px 15px rgba(0,0,0,0.4)';
+  iosToast.style.zIndex = '9999';
+  iosToast.style.textAlign = 'center';
+  iosToast.style.maxWidth = '300px';
+  iosToast.style.fontSize = '0.9rem';
+  
+  iosToast.innerHTML = `
+    <div style="font-weight:bold; margin-bottom:5px;">Install Gin Rummy</div>
+    <div>Tap <span style="font-size:1.2rem;">⎋</span> (Share) then "Add to Home Screen" <span style="font-size:1.2rem;">⊕</span></div>
+    <div style="margin-top:10px; font-size:0.8rem; color:#007AFF; cursor:pointer;" onclick="this.parentElement.remove()">Close</div>
+  `;
+
+  document.body.appendChild(iosToast);
+}
 
 </script>
 </body>
