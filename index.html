@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#2e7d32">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Gin Rummy 100</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root {
+    --bg-color: #2e7d32;
+    --card-width: 70px;
+    --card-height: 100px;
+    --card-radius: 6px;
+  }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--bg-color);
+    color: white;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    height: 100dvh; 
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* --- HEADER --- */
+  header {
+    width: 100%;
+    padding: 8px 0;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: space-evenly; 
+    align-items: center;
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    font-size: 0.9rem;
+    z-index: 10;
+    flex-shrink: 0; 
+  }
+  
+  .game-title { font-weight: bold; color: #ffca28; font-size: 1rem; }
+  .score-board { display: flex; gap: 20px; font-weight: bold; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 15px; }
+  .score-item span { color: #ffca28; }
+
+  /* --- GAME AREA --- */
+  #game-area {
+    flex: 1;
+    width: 100%;
+    max-width: 900px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    padding: 40px 0 30px 0; 
+    box-sizing: border-box;
+  }
+
+  /* --- HANDS --- */
+  .hand-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    z-index: 5; 
+  }
+  .hand-label { font-size: 0.75rem; opacity: 0.8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;}
+
+  .hand {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    height: 120px;
+    position: relative;
+    padding: 0 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* SPACER for Gaps */
+  .spacer {
+    width: 15px; 
+    min-width: 15px;
+    height: 100px;
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  /* --- CARD VISUALS --- */
+  .card {
+    width: var(--card-width);
+    min-width: var(--card-width);
+    height: var(--card-height);
+    background: white;
+    border-radius: var(--card-radius);
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    position: relative;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: transform 0.2s; /* Hover effect only */
+    z-index: 1;
+    flex-shrink: 0;
+  }
+
+  /* NEWLY DRAWN HIGHLIGHT */
+  .card.newly-drawn {
+    background-color: #e0e0e0; /* Subtle Grey */
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,0.1), 2px 2px 5px rgba(0,0,0,0.3);
+  }
+
+  .hand .card {
+    margin-right: -45px;
+  }
+  .hand .card:last-child { margin-right: 0; }
+  
+  #player-hand .card:hover { margin-top: -15px; z-index: 100; transform: scale(1.05); }
+
+  .card.red { color: #d32f2f; }
+  .card.black { color: #212121; }
+  
+  .card .corner { position: absolute; font-size: 0.8rem; display: flex; flex-direction: column; align-items: center; }
+  .card .top-left { top: 4px; left: 4px; }
+  .card .bottom-right { bottom: 4px; right: 4px; transform: rotate(180deg); }
+  .card .suit-center { font-size: 2rem; }
+
+  /* Computer Card Styling */
+  #computer-hand .card { background: #b71c1c; border: 2px solid white; }
+  #computer-hand .card.revealed { background: white; border: none; }
+  #computer-hand .card:not(.revealed) .value, 
+  #computer-hand .card:not(.revealed) .suit,
+  #computer-hand .card:not(.revealed) .corner { display: none; }
+
+  .card-back:not(.revealed) {
+    background: repeating-linear-gradient(45deg, #b71c1c, #b71c1c 5px, #d32f2f 5px, #d32f2f 10px);
+    border: 2px solid #fff;
+  }
+  
+  /* --- DIMMED STATE (DEADWOOD) --- */
+  .dimmed { 
+    filter: grayscale(1) brightness(0.65);
+    cursor: default;
+  }
+
+  /* --- TABLE --- */
+  .table-center {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    align-items: center;
+    height: 140px;
+    z-index: 5;
+    flex-shrink: 0;
+  }
+  .stack {
+    width: var(--card-width);
+    height: var(--card-height);
+    border-radius: var(--card-radius);
+    position: relative;
+    border: 2px dashed rgba(255,255,255,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s;
+    background: rgba(0,0,0,0.1);
+  }
+  .stack:active { transform: scale(0.95); }
+  .stack-label { position: absolute; bottom: -25px; font-size: 0.8rem; color: #ccc; font-weight: bold; }
+
+  /* LOCKED STATE */
+  .locked {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  /* --- ANIMATION LAYER --- */
+  #animation-layer {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+  }
+  .flying-card {
+      position: absolute;
+      /* Timings increased to 0.61s as requested in v43 */
+      transition: top 0.61s ease-in-out, left 0.61s ease-in-out;
+      z-index: 1000;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.4) !important;
+  }
+
+  /* --- CONTROLS --- */
+  #controls {
+    position: absolute;
+    bottom: 160px; 
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    pointer-events: none;
+    z-index: 200;
+  }
+  button {
+    pointer-events: auto;
+    padding: 10px 25px;
+    font-size: 0.95rem; 
+    background: #ffca28;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px #c79100;
+    font-weight: bold;
+    color: #333;
+    display: none;
+    transition: transform 0.1s;
+    min-width: 120px; 
+  }
+  button:active { transform: translateY(2px); box-shadow: 0 2px #c79100; }
+  button.secondary { background: #fff; color: #333; box-shadow: 0 4px #999; min-width: auto; }
+
+  /* --- OVERLAY --- */
+  #status-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: transparent; 
+    display: none;
+    z-index: 999;
+    pointer-events: none; 
+  }
+  
+  #status-box {
+    position: absolute;
+    transform: translate(-50%, -50%); 
+    pointer-events: auto; 
+    background: rgba(51, 51, 51, 0.96);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    border: 2px solid #ffca28;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    animation: popIn 0.3s ease-out;
+  }
+  
+  @keyframes popIn {
+    from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+    to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  }
+
+  h2 { margin-top: 0; color: #ffca28; font-size: 1.3rem; margin-bottom: 8px; }
+
+  #overlay-content { font-size: 0.95rem; line-height: 1.4; }
+  
+  .match-summary {
+    font-size: 0.85rem;
+    color: #ddd;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 8px;
+  }
+  .winner-text {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    margin-top: 5px;
+  }
+  
+  #toast {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    pointer-events: none;
+    display: none;
+    z-index: 150;
+    white-space: nowrap; 
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="game-title">Gin Rummy 100</div>
+  <div class="score-board">
+    <div class="score-item">You: <span id="p-score">0</span></div>
+    <div class="score-item">CPU: <span id="c-score">0</span></div>
+  </div>
+  <button id="btn-restart" class="secondary" style="display:block; padding: 5px 12px; font-size: 0.75rem" onclick="confirmReset()">New Game</button>
+</header>
+
+<div id="toast">Your Turn</div>
+<div id="animation-layer"></div>
+
+<div id="status-overlay">
+  <div id="status-box">
+    <h2 id="overlay-title">Round Over</h2>
+    <div id="overlay-content"></div>
+    <br>
+    <button id="overlay-btn" style="display:inline-block" onclick="nextRound()">Next Round</button>
+  </div>
+</div>
+
+<div id="game-area">
+  <div class="hand-container">
+    <div class="hand" id="computer-hand"></div>
+  </div>
+
+  <div class="table-center">
+    <div class="stack" id="stock-pile" onclick="playerDraw('stock')">
+      <div class="card card-back"></div>
+      <div class="stack-label">Stock</div>
+    </div>
+    
+    <div class="stack" id="discard-pile" onclick="playerDraw('discard')">
+      <div class="stack-label">Discard</div>
+    </div>
+  </div>
+
+  <div id="controls">
+    <button id="btn-knock" onclick="playerKnock()">Knock</button>
+  </div>
+
+  <div class="hand-container">
+    <div class="hand-label" id="player-hand-label">Your Hand</div>
+    <div class="hand" id="player-hand"></div>
+  </div>
+</div>
+
+<script>
+/* --- CONSTANTS --- */
+const SUITS = ['♠', '♥', '♣', '♦'];
+const VALUES = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+const POINTS = {'A':1, '2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, '10':10, 'J':10, 'Q':10, 'K':10};
+const TARGET_SCORE = 100;
+
+/* --- STATE --- */
+let deck = [];
+let discardPile = [];
+let playerHand = [];
+let cpuHand = [];
+let playerScore = 0;
+let cpuScore = 0;
+let turn = 'player'; 
+let phase = 'draw';
+let isRoundOver = false;
+let lastDrawnCardId = null; 
+let interactionLock = false; 
+
+/* --- DOM --- */
+const elPlayerHand = document.getElementById('player-hand');
+const elCpuHand = document.getElementById('computer-hand');
+const elStock = document.getElementById('stock-pile');
+const elDiscard = document.getElementById('discard-pile');
+const elTable = document.querySelector('.table-center'); 
+const elOverlay = document.getElementById('status-overlay');
+const elOverlayTitle = document.getElementById('overlay-title');
+const elOverlayContent = document.getElementById('overlay-content');
+const elOverlayBtn = document.getElementById('overlay-btn');
+const elStatusBox = document.getElementById('status-box');
+const btnKnock = document.getElementById('btn-knock');
+const elToast = document.getElementById('toast');
+
+/* --- PWA: REGISTER SERVICE WORKER --- */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker registered', reg))
+      .catch(err => console.log('Service Worker registration failed', err));
+  });
+}
+
+/* --- INIT --- */
+function confirmReset() {
+    if(confirm("Start a brand new game? Scores will reset.")) resetGame();
+}
+
+function resetGame() {
+    playerScore = 0;
+    cpuScore = 0;
+    updateScoreUI();
+    initRound();
+}
+
+function initRound() {
+    turn = 'player';
+    phase = 'draw';
+    isRoundOver = false;
+    lastDrawnCardId = null;
+    interactionLock = false;
+    deck = [];
+    discardPile = [];
+    elOverlay.style.display = 'none';
+    
+    createDeck();
+    shuffleDeck();
+    dealHands();
+    
+    discardPile.push(deck.pop());
+    
+    renderTable();
+    showToast("Your Turn: Draw", true);
+    checkKnockButton();
+}
+
+function createDeck() {
+    deck = [];
+    for(let s of SUITS) {
+        for(let v of VALUES) {
+            deck.push({ 
+                val: v, suit: s, point: POINTS[v], 
+                color: (s==='♥'||s==='♦')?'red':'black',
+                id: Math.random().toString(36).substr(2, 9)
+            });
+        }
+    }
+}
+
+function shuffleDeck() {
+    for(let i=deck.length-1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+}
+
+function dealHands() {
+    playerHand = [];
+    cpuHand = [];
+    for(let i=0; i<10; i++) {
+        playerHand.push(deck.pop());
+        cpuHand.push(deck.pop());
+    }
+    playerHand = sortCards(playerHand);
+    cpuHand = sortCards(cpuHand);
+    playerHand = organizeHand(playerHand).cards;
+    cpuHand = organizeHand(cpuHand).cards;
+}
+
+function sortCards(cards) {
+    return cards.sort((a,b) => getValIdx(b.val) - getValIdx(a.val));
+}
+
+function getValIdx(v) { return VALUES.indexOf(v); }
+
+/* --- LOGIC: SOLVER --- */
+function organizeHand(handInput) {
+    let pool = handInput.map(c => ({...c}));
+    pool.forEach(c => { c.isMeld = false; c.meldId = 0; });
+    
+    let result = findBestMelds(pool);
+    
+    result.melds.sort((groupA, groupB) => {
+        let valA = getValIdx(groupA[0].val);
+        let valB = getValIdx(groupB[0].val);
+        return valB - valA; 
+    });
+
+    result.melds.forEach(group => {
+         group.sort((a,b) => getValIdx(b.val) - getValIdx(a.val));
+    });
+
+    for (let i = 0; i < result.melds.length - 1; i++) {
+        let current = result.melds[i];
+        let next = result.melds[i+1];
+
+        let currentLow = current[current.length - 1]; 
+        let nextHigh = next[0]; 
+
+        if (currentLow.suit === nextHigh.suit && 
+            getValIdx(currentLow.val) === getValIdx(nextHigh.val) + 1) {
+            current.push(...next);
+            result.melds.splice(i + 1, 1);
+            i--;
+        }
+    }
+
+    result.deadwood.sort((a,b) => getValIdx(b.val) - getValIdx(a.val));
+
+    let finalCards = [];
+    let meldCounter = 0;
+    
+    result.melds.forEach(m => {
+        meldCounter++;
+        m.forEach(c => {
+            c.isMeld = true;
+            c.meldId = meldCounter;
+            finalCards.push(c);
+        });
+    });
+    
+    result.deadwood.forEach(c => {
+        c.isMeld = false;
+        c.meldId = 0;
+        finalCards.push(c);
+    });
+    
+    return { score: result.score, cards: finalCards };
+}
+
+function findBestMelds(cards) {
+    let bestResult = { score: calculatePoints(cards), melds: [], deadwood: cards };
+    let potentialMelds = getAllPossibleSingleMelds(cards);
+    
+    if (potentialMelds.length === 0) return bestResult;
+    
+    for (let meld of potentialMelds) {
+        let remaining = getRemainingCards(cards, meld);
+        let subResult = findBestMelds(remaining);
+        
+        if (subResult.score < bestResult.score) {
+            bestResult = {
+                score: subResult.score,
+                melds: [meld, ...subResult.melds],
+                deadwood: subResult.deadwood
+            };
+        }
+    }
+    
+    return bestResult;
+}
+
+function calculatePoints(cards) {
+    return cards.reduce((sum, c) => sum + Math.min(10, c.point), 0);
+}
+
+function getRemainingCards(allCards, cardsToRemove) {
+    let idsToRemove = cardsToRemove.map(c => c.id);
+    return allCards.filter(c => !idsToRemove.includes(c.id));
+}
+
+function getAllPossibleSingleMelds(cards) {
+    let melds = [];
+    let byVal = {};
+    cards.forEach(c => {
+        if(!byVal[c.val]) byVal[c.val] = [];
+        byVal[c.val].push(c);
+    });
+    
+    for(let v in byVal) {
+        let group = byVal[v];
+        if(group.length >= 3) {
+            melds.push(group.slice(0, 3)); 
+            if(group.length === 4) {
+                melds.push(group);
+                melds.push([group[0], group[1], group[3]]);
+                melds.push([group[0], group[2], group[3]]);
+                melds.push([group[1], group[2], group[3]]);
+            }
+        }
+    }
+    
+    let sorted = [...cards].sort((a,b) => {
+        if(a.suit !== b.suit) return a.suit.localeCompare(b.suit);
+        return getValIdx(a.val) - getValIdx(b.val);
+    });
+    
+    for(let i=0; i<sorted.length; i++) {
+        let run = [sorted[i]];
+        for(let j=i+1; j<sorted.length; j++) {
+            let prev = run[run.length-1];
+            let curr = sorted[j];
+            if(curr.suit === prev.suit && getValIdx(curr.val) === getValIdx(prev.val) + 1) {
+                run.push(curr);
+                if(run.length >= 3) melds.push([...run]);
+            } else {
+                break;
+            }
+        }
+    }
+    return melds;
+}
+
+/* --- GAMEPLAY --- */
+function playerDraw(source) {
+    if(interactionLock || isRoundOver || turn !== 'player' || phase !== 'draw') return;
+
+    let drawnCard = null;
+
+    if(source === 'stock') {
+        if(deck.length === 0) { roundEnd("Draw"); return; }
+        drawnCard = deck.pop();
+    } else {
+        if(discardPile.length === 0) return;
+        drawnCard = discardPile.pop();
+    }
+    
+    lastDrawnCardId = drawnCard.id;
+    playerHand.push(drawnCard);
+    
+    phase = 'discard';
+    playerHand = organizeHand(playerHand).cards;
+    
+    showToast("Select card to Discard", true);
+    
+    renderTable();
+    checkKnockButton();
+}
+
+function onCardClick(idx) {
+    if(interactionLock || isRoundOver || turn !== 'player' || phase !== 'discard') return;
+    
+    let discarded = playerHand.splice(idx, 1)[0];
+    discardPile.push(discarded);
+    
+    let solved = organizeHand(playerHand);
+    if(solved.score === 0) {
+        playerHand = solved.cards; 
+        renderTable(); 
+        calculateScores('player'); 
+        return; 
+    }
+
+    playerHand = solved.cards;
+
+    turn = 'cpu';
+    phase = 'draw';
+    interactionLock = true; 
+    btnKnock.style.display = 'none'; 
+    lastDrawnCardId = null; 
+    showToast("CPU Turn...");
+    renderTable();
+    
+    setTimeout(cpuTurn, 1000);
+}
+
+function cpuTurn() {
+    let wantDiscard = false;
+    let top = discardPile.length > 0 ? discardPile[discardPile.length-1] : null;
+
+    if(top) {
+        let currentScore = organizeHand(cpuHand).score;
+        let testHand = [...cpuHand, top];
+        let newScore = organizeHand(testHand).score;
+        if(newScore < currentScore) wantDiscard = true;
+    }
+
+    if(wantDiscard) {
+        showToast("CPU takes your card");
+        animateCpuPickup();
+    } else {
+        if(deck.length === 0) { roundEnd("Draw"); return; }
+        animateCpuStockDraw();
+    }
+}
+
+// === ANIMATION: CPU Stock Draw (Face Down Card moves UP) ===
+function animateCpuStockDraw() {
+    const stockEl = document.getElementById('stock-pile');
+    
+    const rect = stockEl.getBoundingClientRect();
+    const flyer = document.createElement('div');
+    flyer.className = 'card card-back flying-card';
+    flyer.style.top = rect.top + 'px';
+    flyer.style.left = rect.left + 'px';
+    flyer.style.margin = '0';
+    document.getElementById('animation-layer').appendChild(flyer);
+
+    const cardData = deck.pop();
+    renderTable();
+
+    const cpuRect = elCpuHand.getBoundingClientRect();
+    const destX = cpuRect.left + (cpuRect.width / 2) - 35;
+    const destY = cpuRect.top + 10;
+
+    setTimeout(() => {
+        flyer.style.top = destY + 'px';
+        flyer.style.left = destX + 'px';
+    }, 50);
+
+    setTimeout(() => {
+        flyer.remove();
+        cpuHand.push(cardData);
+        setTimeout(cpuDecideDiscard, 500);
+    }, 660); // 660ms timeout to match 0.61s CSS
+}
+
+// === ANIMATION: CPU Pickup Discard ===
+function animateCpuPickup() {
+    const discardEl = document.querySelector('#discard-pile .card:last-child');
+    if(!discardEl) return;
+
+    const rect = discardEl.getBoundingClientRect();
+    const flyer = discardEl.cloneNode(true);
+    flyer.classList.add('flying-card');
+    flyer.style.top = rect.top + 'px';
+    flyer.style.left = rect.left + 'px';
+    flyer.style.margin = '0';
+    document.getElementById('animation-layer').appendChild(flyer);
+
+    const cardData = discardPile.pop();
+    renderTable();
+
+    const cpuRect = elCpuHand.getBoundingClientRect();
+    const destX = cpuRect.left + (cpuRect.width / 2) - 35;
+    const destY = cpuRect.top + 10;
+
+    setTimeout(() => {
+        flyer.style.top = destY + 'px';
+        flyer.style.left = destX + 'px';
+    }, 50);
+
+    setTimeout(() => {
+        flyer.remove();
+        cpuHand.push(cardData);
+        setTimeout(cpuDecideDiscard, 500);
+    }, 660); // 660ms timeout
+}
+
+// === CPU Logic for Discarding ===
+function cpuDecideDiscard() {
+    let bestIdx = 0;
+    let lowestScore = 1000;
+
+    for(let i=0; i<cpuHand.length; i++) {
+        let temp = [...cpuHand];
+        temp.splice(i, 1);
+        let s = organizeHand(temp).score;
+        if(s < lowestScore) { lowestScore = s; bestIdx = i; }
+    }
+    
+    const discardedCard = cpuHand.splice(bestIdx, 1)[0];
+    
+    if(lowestScore <= 10) {
+        animateCpuDiscard(discardedCard, () => {
+             discardPile.push(discardedCard);
+             calculateScores('cpu');
+        });
+    } else {
+        animateCpuDiscard(discardedCard, () => {
+            discardPile.push(discardedCard);
+            turn = 'player';
+            phase = 'draw';
+            interactionLock = false; 
+            showToast("Your Turn", true);
+            renderTable();
+        });
+    }
+}
+
+// === ANIMATION: CPU Discard ===
+function animateCpuDiscard(cardData, onComplete) {
+    const cpuRect = elCpuHand.getBoundingClientRect();
+    const startX = cpuRect.left + (cpuRect.width / 2) - 35; 
+    const startY = cpuRect.top + 10;
+    
+    const flyer = createCardDiv(cardData);
+    flyer.classList.add('flying-card');
+    flyer.style.top = startY + 'px';
+    flyer.style.left = startX + 'px';
+    document.getElementById('animation-layer').appendChild(flyer);
+
+    const discardRect = elDiscard.getBoundingClientRect();
+    const destX = discardRect.left + (discardRect.width/2) - 35; 
+    const destY = discardRect.top + (discardRect.height/2) - 50; 
+
+    setTimeout(() => {
+        flyer.style.top = destY + 'px';
+        flyer.style.left = destX + 'px';
+    }, 50);
+
+    setTimeout(() => {
+        flyer.remove();
+        onComplete();
+    }, 660); // 660ms timeout
+}
+
+
+function playerKnock() {
+    let bestIdx = -1;
+    let minScore = 1000;
+    for(let i=0; i<playerHand.length; i++) {
+        let temp = [...playerHand];
+        temp.splice(i, 1);
+        let s = organizeHand(temp).score;
+        if(s < minScore) { minScore = s; bestIdx = i; }
+    }
+
+    if(minScore > 10) {
+        alert("Cannot Knock! Deadwood must be <= 10.");
+        return;
+    }
+
+    btnKnock.style.display = 'none';
+
+    let discarded = playerHand.splice(bestIdx, 1)[0];
+    discardPile.push(discarded);
+    calculateScores('player');
+}
+
+function checkKnockButton() {
+    if(!isRoundOver && turn === 'player' && phase === 'discard') {
+        let minScore = 1000;
+        
+        for(let i=0; i<playerHand.length; i++) {
+            let temp = [...playerHand];
+            temp.splice(i, 1);
+            let s = organizeHand(temp).score;
+            if(s < minScore) minScore = s;
+        }
+
+        if(minScore === 0) {
+            btnKnock.innerText = "GIN!";
+            btnKnock.style.display = 'block';
+        } 
+        else if(minScore <= 10) {
+            btnKnock.innerText = `Knock (${minScore} pts)`;
+            btnKnock.style.display = 'block';
+        } 
+        else {
+            btnKnock.style.display = 'none';
+        }
+    } else {
+        btnKnock.style.display = 'none';
+    }
+}
+
+/* --- SCORING --- */
+function calculateScores(knocker) {
+    isRoundOver = true;
+    btnKnock.style.display = 'none'; 
+    lastDrawnCardId = null;
+    interactionLock = true; 
+    
+    let pRes = organizeHand(playerHand);
+    playerHand = pRes.cards;
+    let pDead = pRes.score;
+
+    let cRes = organizeHand(cpuHand);
+    cpuHand = cRes.cards;
+    let cDead = cRes.score;
+
+    let diff = Math.abs(pDead - cDead);
+    let msg = "";
+
+    if(knocker === 'player') {
+        if(pDead < cDead) {
+            playerScore += diff;
+            msg = `<span style="color:#4caf50">You Won Round!</span><br>CPU Deadwood: ${cDead}<br>Your Deadwood: ${pDead}<br>(+${diff})`;
+            if(pDead === 0) { 
+                playerScore += 25; 
+                msg = `<span style="color:#4caf50; font-size:1.2rem">GIN!</span><br>Bonus +25<br>CPU Deadwood: ${cDead} (+${diff})`;
+            }
+        } else {
+            cpuScore += (diff + 25);
+            msg = `<span style="color:#f44336">UNDERCUT!</span><br>CPU had ${cDead} (<= yours).<br>CPU gets +${diff+25}`;
+        }
+    } else {
+        if(cDead < pDead) {
+            cpuScore += diff;
+            msg = `<span style="color:#f44336">CPU Won Round.</span><br>CPU Deadwood: ${cDead}<br>Your Deadwood: ${pDead}<br>CPU gets +${diff}`;
+            if(cDead === 0) { cpuScore += 25; msg += "<br>GIN BONUS +25"; }
+        } else {
+            playerScore += (diff + 25);
+            msg = `<span style="color:#4caf50">You Undercut CPU!</span><br>You get +${diff+25}`;
+        }
+    }
+
+    updateScoreUI();
+    renderTable(true); 
+
+    if(playerScore >= TARGET_SCORE || cpuScore >= TARGET_SCORE) {
+        let winnerName = playerScore >= TARGET_SCORE ? "YOU" : "COMPUTER";
+        let winVerb = playerScore >= TARGET_SCORE ? "WIN" : "WINS"; 
+        
+        let finalHtml = `
+            <div class="match-summary">${msg}</div>
+            <div class="winner-text">${winnerName} ${winVerb}<br>THE MATCH!</div>
+        `;
+        showOverlay("GAME OVER", finalHtml, true);
+    } else {
+        showOverlay("Round Over", msg, false);
+    }
+}
+
+function updateScoreUI() {
+    document.getElementById('p-score').innerText = playerScore;
+    document.getElementById('c-score').innerText = cpuScore;
+}
+
+function showOverlay(title, content, isGameEnd) {
+    elToast.style.display = 'none'; 
+
+    elOverlayTitle.innerText = title;
+    elOverlayContent.innerHTML = content;
+    elOverlayBtn.innerText = isGameEnd ? "New Game" : "Next Round";
+    elOverlayBtn.onclick = isGameEnd ? resetGame : initRound;
+    
+    elOverlay.style.display = 'block';
+
+    const cpuHandRect = elCpuHand.parentElement.getBoundingClientRect();
+    const playerLabelRect = document.getElementById('player-hand-label').getBoundingClientRect();
+    const stockRect = elStock.getBoundingClientRect();
+
+    const availableSpace = playerLabelRect.top - cpuHandRect.bottom;
+    const centerY = cpuHandRect.bottom + (availableSpace / 2);
+    const centerX = stockRect.left + (stockRect.width / 2);
+
+    elStatusBox.style.top = `${centerY}px`;
+    elStatusBox.style.left = `${centerX}px`;
+    elStatusBox.style.transform = `translate(-50%, -50%)`;
+}
+
+let toastTimer = null;
+function showToast(msg, persist = false) {
+    const cpuRect = elCpuHand.getBoundingClientRect();
+    const tableRect = elTable.getBoundingClientRect();
+    const gap = tableRect.top - cpuRect.bottom;
+    const midY = cpuRect.bottom + (gap * 0.60);
+
+    elToast.innerHTML = msg;
+    elToast.style.top = `${midY}px`;
+    elToast.style.display = 'block';
+    
+    if(toastTimer) clearTimeout(toastTimer);
+    
+    if(!persist) {
+        toastTimer = setTimeout(() => { elToast.style.display='none'; }, 2000);
+    }
+}
+
+function roundEnd(reason) {
+     showOverlay("Round Drawn", reason, false);
+     isRoundOver = true;
+     btnKnock.style.display = 'none';
+}
+
+/* --- RENDERER --- */
+function renderTable(revealCpu = false) {
+    renderHand(elPlayerHand, playerHand, false, false);
+    renderHand(elCpuHand, cpuHand, !revealCpu, revealCpu);
+
+    elDiscard.innerHTML = '<div class="stack-label">Discard</div>';
+    if(discardPile.length > 0) {
+        elDiscard.appendChild(createCardDiv(discardPile[discardPile.length-1]));
+    }
+    elStock.style.opacity = deck.length > 0 ? '1' : '0.5';
+
+    if(interactionLock || turn !== 'player') {
+        elStock.classList.add('locked');
+        elDiscard.classList.add('locked');
+    } else {
+        elStock.classList.remove('locked');
+        elDiscard.classList.remove('locked');
+    }
+}
+
+function renderHand(container, cards, hideFaces, revealMode) {
+    container.innerHTML = '';
+    let lastMeldId = -1;
+    let showGaps = !hideFaces || revealMode;
+    let cardsToRender = cards;
+
+    if(hideFaces && cards.length > 10) {
+        cardsToRender = cards.slice(0, 10);
+    }
+
+    cardsToRender.forEach((card, idx) => {
+        if(showGaps && idx > 0) {
+            let needGap = false;
+            if(card.isMeld && lastMeldId !== 0 && card.meldId !== lastMeldId) needGap = true;
+            if(!card.isMeld && lastMeldId !== 0) needGap = true;
+            if(card.isMeld && lastMeldId === 0) needGap = true;
+
+            if(needGap) {
+                let spacer = document.createElement('div');
+                spacer.className = 'spacer';
+                container.appendChild(spacer);
+            }
+        }
+        lastMeldId = card.meldId;
+
+        let div;
+        if(hideFaces) {
+             div = document.createElement('div');
+             div.className = 'card card-back';
+        } else {
+             div = createCardDiv(card);
+             if(revealMode) div.classList.add('revealed');
+             div.onclick = () => onCardClick(idx);
+             if(isRoundOver && !card.isMeld) div.classList.add('dimmed');
+        }
+        container.appendChild(div);
+    });
+}
+
+function createCardDiv(card) {
+    let div = document.createElement('div');
+    div.className = `card ${card.color}`;
+    
+    if(card.id === lastDrawnCardId) {
+        div.classList.add('newly-drawn');
+    }
+
+    div.innerHTML = `
+        <div class="corner top-left"><span>${card.val}</span><span>${card.suit}</span></div>
+        <div class="suit-center">${card.suit}</div>
+        <div class="corner bottom-right"><span>${card.val}</span><span>${card.suit}</span></div>
+    `;
+    return div;
+}
+
+resetGame();
+
+</script>
+</body>
+</html>
