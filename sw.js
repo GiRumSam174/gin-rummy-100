@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ginrummy-v46';
+const CACHE_NAME = 'ginrummy-v48';
 const ASSETS = [
   './',
   './index.html',
