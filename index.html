@@ -12,7 +12,7 @@
 <style>
   :root {
     --bg-color: #2e7d32;
-    /* Default Mobile Sizes */
+    /* --- DEFAULT MOBILE (Base) --- */
     --card-width: 70px;
     --card-height: 100px;
     --card-radius: 6px;
@@ -21,33 +21,55 @@
     --font-scale: 1rem;
     --hand-overlap: -45px;
     --hand-hover: -15px;
+    --game-max-width: 900px;
   }
 
-  /* Tablet (Small) / Landscape Phones */
-  @media (min-width: 600px) and (min-height: 600px) {
+  /* --- MEDIUM TABLET / LANDSCAPE PHONE (1.5x) --- 
+     Active if screen is at least 600px wide AND 500px tall */
+  @media (min-width: 600px) and (min-height: 500px) {
     :root {
         --card-width: 100px;
         --card-height: 142px;
         --card-radius: 9px;
         --hand-height: 160px;
         --table-height: 180px;
-        --font-scale: 1.3rem;
-        --hand-overlap: -65px; /* Increase overlap for bigger cards */
+        --font-scale: 1.2rem;
+        --hand-overlap: -65px;
         --hand-hover: -25px;
+        --game-max-width: 1100px;
     }
   }
 
-  /* Tablet (Large) / Desktop */
-  @media (min-width: 1024px) {
+  /* --- LARGE DESKTOP (1.8x) ---
+     Active if screen is wide (1200px) but maybe not super tall */
+  @media (min-width: 1200px) {
     :root {
-        --card-width: 120px;
-        --card-height: 170px;
+        --card-width: 126px;
+        --card-height: 180px;
         --card-radius: 12px;
         --hand-height: 200px;
         --table-height: 220px;
-        --font-scale: 1.5rem;
-        --hand-overlap: -75px;
+        --font-scale: 1.4rem;
+        --hand-overlap: -80px;
         --hand-hover: -30px;
+        --game-max-width: 1400px;
+    }
+  }
+
+  /* --- "MASSIVE" PORTRAIT TABLET MODE (2.4x) --- 
+     Active ONLY if screen is tall enough (1000px+) to fit the stack.
+     This targets iPads in Portrait mode. */
+  @media (min-width: 768px) and (min-height: 1000px) {
+    :root {
+        --card-width: 168px;   /* 70 * 2.4 */
+        --card-height: 240px;  /* 100 * 2.4 */
+        --card-radius: 16px;
+        --hand-height: 270px;
+        --table-height: 290px;
+        --font-scale: 1.8rem;
+        --hand-overlap: -115px; /* Significant overlap to fit hand on screen */
+        --hand-hover: -40px;
+        --game-max-width: 1200px;
     }
   }
 
@@ -89,7 +111,7 @@
   #game-area {
     flex: 1;
     width: 100%;
-    max-width: 1200px; /* Allow wider layout on tablets */
+    max-width: var(--game-max-width);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -236,7 +258,7 @@
   /* --- CONTROLS --- */
   #controls {
     position: absolute;
-    bottom: calc(var(--hand-height) + 50px); /* Dynamic positioning */
+    bottom: calc(var(--hand-height) + 40px);
     width: 100%;
     display: flex;
     justify-content: center;
@@ -246,18 +268,18 @@
   }
   button {
     pointer-events: auto;
-    padding: 10px 25px;
+    padding: 12px 30px;
     font-size: var(--font-scale); 
     background: #ffca28;
     border: none;
-    border-radius: 25px;
+    border-radius: 30px;
     cursor: pointer;
     box-shadow: 0 4px #c79100;
     font-weight: bold;
     color: #333;
     display: none;
     transition: transform 0.1s;
-    min-width: 120px; 
+    min-width: 140px; 
   }
   button:active { transform: translateY(2px); box-shadow: 0 2px #c79100; }
   button.secondary { background: #fff; color: #333; box-shadow: 0 4px #999; min-width: auto; }
@@ -267,7 +289,7 @@
     position: absolute;
     bottom: 5px;
     width: 100%;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     color: rgba(255,255,255,0.2);
     text-align: center;
     font-family: monospace;
@@ -386,7 +408,7 @@
   <div class="hand-container">
     <div class="hand-label" id="player-hand-label">Your Hand</div>
     <div class="hand" id="player-hand"></div>
-    <div class="version-display">v1.0.49</div>
+    <div class="version-display">v1.0.50</div>
   </div>
 </div>
 
@@ -821,7 +843,7 @@ function animateCpuDiscard(cardData, onComplete) {
 
     const discardRect = elDiscard.getBoundingClientRect();
     const destX = discardRect.left + (discardRect.width/2) - half; 
-    const destY = discardRect.top + (discardRect.height/2) - (1.4 * half); // Approx center height
+    const destY = discardRect.top + (discardRect.height/2) - (1.4 * half); 
 
     setTimeout(() => {
         flyer.style.top = destY + 'px';
