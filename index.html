@@ -22,10 +22,10 @@
     --hand-overlap: -45px;
     --hand-hover: -15px;
     --game-max-width: 900px;
+    --spacer-factor: 0.25; /* Standard gap size */
   }
 
-  /* --- MEDIUM TABLET / LANDSCAPE PHONE (1.5x) --- 
-     Active if screen is at least 600px wide AND 500px tall */
+  /* --- MEDIUM TABLET / LANDSCAPE PHONE (1.5x) --- */
   @media (min-width: 600px) and (min-height: 500px) {
     :root {
         --card-width: 100px;
@@ -40,8 +40,7 @@
     }
   }
 
-  /* --- LARGE DESKTOP (1.8x) ---
-     Active if screen is wide (1200px) but maybe not super tall */
+  /* --- LARGE DESKTOP (1.8x) --- */
   @media (min-width: 1200px) {
     :root {
         --card-width: 126px;
@@ -56,20 +55,21 @@
     }
   }
 
-  /* --- "MASSIVE" PORTRAIT TABLET MODE (2.4x) --- 
-     Active ONLY if screen is tall enough (1000px+) to fit the stack.
-     This targets iPads in Portrait mode. */
+  /* --- "MASSIVE" PORTRAIT TABLET MODE (2.4x) --- */
   @media (min-width: 768px) and (min-height: 1000px) {
     :root {
-        --card-width: 168px;   /* 70 * 2.4 */
-        --card-height: 240px;  /* 100 * 2.4 */
+        --card-width: 168px;
+        --card-height: 240px;
         --card-radius: 16px;
         --hand-height: 270px;
         --table-height: 290px;
         --font-scale: 1.8rem;
-        --hand-overlap: -115px; /* Significant overlap to fit hand on screen */
+        /* Tighten the overlap so 11 cards fit on a 768px screen */
+        --hand-overlap: -125px; 
         --hand-hover: -40px;
         --game-max-width: 1200px;
+        /* Reduce gap size between melds to save space */
+        --spacer-factor: 0.15; 
     }
   }
 
@@ -145,8 +145,8 @@
   
   /* SPACER for Gaps */
   .spacer {
-    width: calc(var(--card-width) * 0.25); 
-    min-width: 15px;
+    width: calc(var(--card-width) * var(--spacer-factor)); 
+    min-width: 10px;
     height: var(--card-height);
     pointer-events: none;
     flex-shrink: 0;
@@ -408,7 +408,7 @@
   <div class="hand-container">
     <div class="hand-label" id="player-hand-label">Your Hand</div>
     <div class="hand" id="player-hand"></div>
-    <div class="version-display">v1.0.50</div>
+    <div class="version-display">v1.0.51</div>
   </div>
 </div>
 
