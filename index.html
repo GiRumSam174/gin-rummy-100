@@ -184,7 +184,14 @@
   }
   .hand .card:last-child { margin-right: 0; }
   
-  #player-hand .card:hover { margin-top: var(--hand-hover); z-index: 100; transform: scale(1.05); }
+  /* --- HOVER FIX: Only enable hover lift on devices with a mouse --- */
+  @media (hover: hover) {
+    #player-hand .card:hover { 
+      margin-top: var(--hand-hover); 
+      z-index: 100; 
+      transform: scale(1.05); 
+    }
+  }
 
   .card.red { color: #d32f2f; }
   .card.black { color: #212121; }
@@ -408,7 +415,7 @@
   <div class="hand-container">
     <div class="hand-label" id="player-hand-label">Your Hand</div>
     <div class="hand" id="player-hand"></div>
-    <div class="version-display">v1.0.52 (Smart CPU)</div>
+    <div class="version-display">v1.0.53 (Smart & Fixes)</div>
   </div>
 </div>
 
