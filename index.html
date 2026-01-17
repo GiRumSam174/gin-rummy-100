@@ -408,7 +408,7 @@
   <div class="hand-container">
     <div class="hand-label" id="player-hand-label">Your Hand</div>
     <div class="hand" id="player-hand"></div>
-    <div class="version-display">v1.0.51</div>
+    <div class="version-display">v1.0.52 (Smart CPU)</div>
   </div>
 </div>
 
@@ -803,6 +803,7 @@ function cpuDecideDiscard() {
     let bestIdx = 0;
     let lowestScore = 1000;
 
+    // 1. Determine best discard
     for(let i=0; i<cpuHand.length; i++) {
         let temp = [...cpuHand];
         temp.splice(i, 1);
@@ -811,8 +812,23 @@ function cpuDecideDiscard() {
     }
     
     const discardedCard = cpuHand.splice(bestIdx, 1)[0];
+
+    // 2. Smart Knocking Logic
+    let knockThreshold = 10;
+    const cardsLeft = deck.length;
+
+    if (cardsLeft > 20) {
+        // Early Game: Aggressive
+        knockThreshold = 10;
+    } else if (cardsLeft > 10) {
+        // Mid Game: Careful
+        knockThreshold = 6;
+    } else {
+        // End Game: Survival (Only Gin or very low deadwood)
+        knockThreshold = 2;
+    }
     
-    if(lowestScore <= 10) {
+    if(lowestScore <= knockThreshold) {
         animateCpuDiscard(discardedCard, () => {
              discardPile.push(discardedCard);
              calculateScores('cpu');
