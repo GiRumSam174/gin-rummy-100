@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ginrummy-v52';
+const CACHE_NAME = 'ginrummy-v53'; // Version bump
 const ASSETS = [
   './',
   './index.html',
@@ -8,9 +8,21 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (e) => {
+  self.skipWaiting(); // Force update immediately
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
+});
+
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keyList) => {
+      return Promise.all(keyList.map((key) => {
+        if (key !== CACHE_NAME) return caches.delete(key);
+      }));
+    })
+  );
+  return self.clients.claim(); // Take control immediately
 });
 
 self.addEventListener('fetch', (e) => {
