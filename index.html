@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Gin Rummy v4.2 (Blue)</title>
+<title>Gin Rummy v4.3 (Blue)</title>
 <style>
   :root {
     --bg-color: #2e7d32;
@@ -41,7 +41,6 @@
     flex-shrink: 0; 
   }
   
-  /* Added ID for Easter Egg targeting */
   .game-title { font-weight: bold; color: #ffca28; font-size: 1rem; }
   
   .score-board { display: flex; gap: 20px; font-weight: bold; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 15px; }
@@ -123,7 +122,10 @@
   }
   .hand .card:last-child { margin-right: 0; }
   
-  #player-hand .card:hover { margin-top: -15px; z-index: 100; transform: scale(1.05); }
+  /* --- THE FIX: Only allow hover on devices with a mouse --- */
+  @media (hover: hover) {
+    #player-hand .card:hover { margin-top: -15px; z-index: 100; transform: scale(1.05); }
+  }
 
   .card.red { color: #d32f2f; }
   .card.black { color: #212121; }
@@ -418,7 +420,7 @@ function triggerEasterEgg() {
     const el = document.getElementById('app-title');
     if (el.innerText !== "Gin Rummy 100") return;
     
-    el.innerText = "v4.2";
+    el.innerText = "v4.3";
     setTimeout(() => {
         el.innerText = "Gin Rummy 100";
     }, 2000);
