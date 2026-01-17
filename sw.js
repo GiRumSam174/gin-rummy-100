@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ginrummy-v56'; // Version bump
+const CACHE_NAME = 'ginrummy-v57';
 const ASSETS = [
   './',
   'index.html',
