@@ -1,8 +1,9 @@
 {
   "name": "Gin Rummy 100",
   "short_name": "Gin Rummy",
-  "start_url": "index.html",
+  "start_url": "./",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
   "background_color": "#2e7d32",
   "theme_color": "#2e7d32",
   "orientation": "portrait",

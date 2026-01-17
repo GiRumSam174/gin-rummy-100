@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ginrummy-v55'; // Version bump
+const CACHE_NAME = 'ginrummy-v56'; // Version bump
 const ASSETS = [
   './',
   'index.html',
@@ -11,8 +11,6 @@ self.addEventListener('install', (e) => {
   self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // We wrap this in a try/catch or just return to ensure installation 
-      // continues even if one file fails (though we want them all)
       return cache.addAll(ASSETS);
     })
   );
