@@ -1,4 +1,4 @@
-An easy to play, offline version of Gin Rummy that plays well on your smartphone in portrait mode. 
+An easy to play, offline version of Gin Rummy that plays well on your smartphone in portrait mode. It's just you versus your CPU.
 
 No adds and no special permission requirements! 
 
