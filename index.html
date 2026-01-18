@@ -5,13 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Gin Rummy 100</title>
 
+<link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAAhFBMVEUAAAAuKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf9aN90TAAAALnRSTlMAIg0I8gX66xIGC/L05iAf9uPqGgr569y9lnx6bV1MQjUqIh4YF+PZ1s3GuramH9w9GyoAAAHkSURBVHja7drbcoIwEIZRExVvKEXj/V+yQA8QySzb6bS1/6+6N5M5yQYhF51Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6f4//wDkvwF5G9XFrgAAAABJRU5ErkJggg==">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAAhFBMVEUAAAAuKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf9aN90TAAAALnRSTlMAIg0I8gX66xIGC/L05iAf9uPqGgr569y9lnx6bV1MQjUqIh4YF+PZ1s3GuramH9w9GyoAAAHkSURBVHja7drbcoIwEIZRExVvKEXj/V+yQA8QySzb6bS1/6+6N5M5yQYhF51Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6f4//wDkvwF5G9XFrgAAAABJRU5ErkJggg==">
+
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#2e7d32">
 
-<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAAhFBMVEUAAAAuKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf9aN90TAAAALnRSTlMAIg0I8gX66xIGC/L05iAf9uPqGgr569y9lnx6bV1MQjUqIh4YF+PZ1s3GuramH9w9GyoAAAHkSURBVHja7drbcoIwEIZRExVvKEXj/V+yQA8QySzb6bS1/6+6N5M5yQYhF51Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6f4//wDkvwF5G9XFrgAAAABJRU5ErkJggg==">
-<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAAhFBMVEUAAAAuKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf9aN90TAAAALnRSTlMAIg0I8gX66xIGC/L05iAf9uPqGgr569y9lnx6bV1MQjUqIh4YF+PZ1s3GuramH9w9GyoAAAHkSURBVHja7drbcoIwEIZRExVvKEXj/V+yQA8QySzb6bS1/6+6N5M5yQYhF51Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6f4//wDkvwF5G9XFrgAAAABJRU5ErkJggg==">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAAhFBMVEUAAAAuKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf9aN90TAAAALnRSTlMAIg0I8gX66xIGC/L05iAf9uPqGgr569y9lnx6bV1MQjUqIh4YF+PZ1s3GuramH9w9GyoAAAHkSURBVHja7drbcoIwEIZRExVvKEXj/V+yQA8QySzb6bS1/6+6N5M5yQYhF51Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6f4//wDkvwF5G9XFrgAAAABJRU5ErkJggg==">
 
 <style>
   :root {
@@ -19,7 +21,7 @@
     --card-width: 70px;
     --card-height: 100px;
     --card-radius: 6px;
-    --card-overlap: -45px; /* How much cards overlap in hand */
+    --card-overlap: -45px;
   }
   body {
     font-family: 'Segoe UI', sans-serif;
@@ -33,7 +35,7 @@
     height: 100dvh; 
     overflow: hidden;
     user-select: none;
-    -webkit-tap-highlight-color: transparent; /* Remove blue highlight on tap */
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* --- HEADER --- */
@@ -51,7 +53,6 @@
     z-index: 10;
     flex-shrink: 0;
     position: relative; 
-    /* Handle safe area for notch phones */
     padding-top: env(safe-area-inset-top);
   }
   
@@ -90,7 +91,6 @@
     justify-content: space-between; 
     padding: 30px 0 30px 0; 
     box-sizing: border-box;
-    /* Bottom padding for iPhone Home Indicator */
     padding-bottom: calc(30px + env(safe-area-inset-bottom));
   }
 
@@ -179,7 +179,7 @@
 
   /* --- SOLID BLUE CARD BACKS --- */
   .card-back:not(.revealed) {
-    background: #0d47a1; /* Solid Deep Blue */
+    background: #0d47a1; 
     border: 2px solid #fff;
   }
   
@@ -385,7 +385,7 @@
 <div id="info-overlay">
     <div class="status-box" style="position: relative; transform: none; min-width: 280px;">
         <h2>Gin Rummy 100</h2>
-        <div style="color: #ffca28; margin-bottom: 5px; font-weight: bold;">v4.97</div>
+        <div style="color: #ffca28; margin-bottom: 5px; font-weight: bold;">v4.98</div>
         <div class="info-text">
             <strong>Knock:</strong> 10 points or less deadwood.<br>
             <strong>Gin:</strong> 0 deadwood (+25 Bonus).<br>
