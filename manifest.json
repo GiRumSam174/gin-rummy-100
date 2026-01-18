@@ -1,14 +1,14 @@
 {
-  "name": "Gin Rummy 100",
-  "short_name": "Gin Rummy",
+  "name": "GIN RUMMY 100",
+  "short_name": "GIN RUMMY",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#2e7d32",
-  "theme_color": "#2e7d32",
+  "background_color": "#1b5e20",
+  "theme_color": "#1b5e20",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAAhFBMVEUAAAAuKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf9aN90TAAAALnRSTlMAIg0I8gX66xIGC/L05iAf9uPqGgr569y9lnx6bV1MQjUqIh4YF+PZ1s3GuramH9w9GyoAAAHkSURBVHja7drbcoIwEIZRExVvKEXj/V+yQA8QySzb6bS1/6+6N5M5yQYhF51Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6f4//wDkvwF5G9XFrgAAAABJRU5ErkJggg==",
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAAhFBMVEUAAAAuKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf9aN90TAAAALnRSTlMAIg0I8gX66xIGC/L05iAf9uPqGgr569y9lnx6bV1MQjUqIh4YF+PZ1s3GuramH9w9GyoAAAHkSURBVHja7drbcoIwEIZRExVvKEXj/V+yQA8QySzb6bS1/6+6N5M5yQYhF51Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6f4//wDkvwF5G9XFrgAAAABJRU5ErkJggg==",
       "sizes": "192x192",
       "type": "image/png"
     }
