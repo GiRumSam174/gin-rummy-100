@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1b5e20">
 
-<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAAhFBMVEUAAAAuKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf9aN90TAAAALnRSTlMAIg0I8gX66xIGC/L05iAf9uPqGgr569y9lnx6bV1MQjUqIh4YF+PZ1s3GuramH9w9GyoAAAHkSURBVHja7drbcoIwEIZRExVvKEXj/V+yQA8QySzb6bS1/6+6N5M5yQYhF51Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6f4//wDkvwF5G9XFrgAAAABJRU5ErkJggg==">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAAhFBMVEUAAAAuKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf8uKf9aN90TAAAALnRSTlMAIg0I8gX66xIGC/L05iAf9uPqGgr569y9lnx6bV1MQjUqIh4YF+PZ1s3GuramH9w9GyoAAAHkSURBVHja7drbcoIwEIZRExVvKEXj/V+yQA8QySzb6bS1/6+6N5M5yQYhF51Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6XQ6nU6n0+l0Op1Op9PpdDqdTqfT6f4//wDkvwF5G9XFrgAAAABJRU5ErkJggg==">
 
 <style>
   :root {
@@ -49,8 +49,8 @@
     align-items: center;
     box-sizing: border-box;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    /* Set font size to match Briscola */
-    font-size: 1.2rem;
+    /* Default base size */
+    font-size: 1rem;
     z-index: 10;
     flex-shrink: 0;
     position: relative; 
@@ -63,21 +63,22 @@
       transform: translateX(-50%);
       font-weight: bold; 
       color: #ffca28; 
-      font-size: 1.1rem; 
+      /* TITLE: Size bumped up (was 1.1rem) */
+      font-size: 1.2rem; 
       cursor: pointer;
       white-space: nowrap;
       text-shadow: 0 1px 3px rgba(0,0,0,0.5);
       text-transform: uppercase;
   }
   
-  /* UPDATED SCORE STYLE */
+  /* SCORES: Size reduced (was 1.2rem) */
   .score-text { 
       font-weight: bold; 
       color: white;
       display: flex;
       gap: 5px;
+      font-size: 1.1rem;
   }
-  /* Removed gold color so numbers are white like Briscola */
   .score-text span { color: white; }
 
   /* --- GAME AREA --- */
@@ -385,7 +386,7 @@
 <div id="info-overlay">
     <div class="status-box" style="position: relative; transform: none; min-width: 280px;">
         <h2>GIN RUMMY 100</h2>
-        <div style="color: #ffca28; margin-bottom: 5px; font-weight: bold;">v5.3</div>
+        <div style="color: #ffca28; margin-bottom: 5px; font-weight: bold;">v5.4</div>
         <div class="info-text">
             <strong>Knock:</strong> 10 points or less deadwood.<br>
             <strong>Gin:</strong> 0 deadwood (+25 Bonus).<br>
