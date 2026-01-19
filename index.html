@@ -383,11 +383,14 @@
 <div id="info-overlay">
     <div class="status-box" style="position: relative; transform: none; min-width: 280px;">
         <h2>GIN RUMMY</h2>
-        <div style="color: #ffca28; margin-bottom: 5px; font-weight: bold;">v6.2 PWA</div>
+        <div style="color: #ffca28; margin-bottom: 5px; font-weight: bold;">v6.3 PWA</div>
         <div class="info-text">
             <strong>Knock:</strong> 10 points or less deadwood.<br>
             <strong>Gin:</strong> 0 deadwood (+25 Bonus).<br>
             <strong>Undercut:</strong> If opponent has equal or lower deadwood, they win (+25 Bonus).
+            
+            <hr style="border:0; border-top:1px solid rgba(255,255,255,0.2); margin:12px 0;">
+            <div id="stats-content" style="font-size: 0.8rem; line-height: 1.6; opacity: 0.95;"></div>
         </div>
         <div class="modal-actions">
             <button onclick="confirmReset(); closeInfoModal()" style="display:inline-block; font-size:0.8rem; padding:8px 15px; min-width: auto;">New Game</button>
@@ -449,6 +452,13 @@ let isRoundOver = false;
 let lastDrawnCardId = null; 
 let interactionLock = false; 
 
+// --- STATS SYSTEM ---
+let appStats = JSON.parse(localStorage.getItem('gin_rummy_stats_v1')) || {
+    hWon: 0, hPlayed: 0, 
+    mWon: 0, mPlayed: 0
+};
+function saveStats() { localStorage.setItem('gin_rummy_stats_v1', JSON.stringify(appStats)); }
+
 /* --- DOM --- */
 const elPlayerHand = document.getElementById('player-hand');
 const elCpuHand = document.getElementById('computer-hand');
@@ -499,7 +509,21 @@ function initRound() {
 
 /* --- EASTER EGG LOGIC --- */
 function triggerEasterEgg() {
+    updateStatsDisplay();
     elInfoOverlay.style.display = 'flex';
+}
+
+function updateStatsDisplay() {
+    const el = document.getElementById('stats-content');
+    if(!el) return;
+    
+    const hPct = appStats.hPlayed > 0 ? Math.round((appStats.hWon / appStats.hPlayed) * 100) : 0;
+    const mPct = appStats.mPlayed > 0 ? Math.round((appStats.mWon / appStats.mPlayed) * 100) : 0;
+    
+    el.innerHTML = `
+        Hands won/played = ${appStats.hWon}/${appStats.hPlayed} = ${hPct}%<br>
+        Matches won/played = ${appStats.mWon}/${appStats.mPlayed} = ${mPct}%
+    `;
 }
 
 function closeInfoModal() {
@@ -936,8 +960,13 @@ function calculateScores(knocker) {
     let diff = Math.abs(pDead - cDead);
     let msg = "";
 
+    // -- STATS LOGIC --
+    let roundWinner = null;
+
     if(knocker === 'player') {
         if(pDead < cDead) {
+            // Player won
+            roundWinner = 'player';
             playerScore += diff;
             msg = `<span style="color:#4caf50">You Won Round!</span><br>CPU Deadwood: ${cDead}<br>Your Deadwood: ${pDead}<br>(+${diff})`;
             if(pDead === 0) { 
@@ -945,24 +974,40 @@ function calculateScores(knocker) {
                 msg = `<span style="color:#4caf50; font-size:1.2rem">GIN!</span><br>Bonus +25<br>CPU Deadwood: ${cDead} (+${diff})`;
             }
         } else {
+            // CPU won (undercut)
+            roundWinner = 'cpu';
             cpuScore += (diff + 25);
             msg = `<span style="color:#f44336">UNDERCUT!</span><br>CPU had ${cDead} (<= yours).<br>CPU gets +${diff+25}`;
         }
     } else {
         if(cDead < pDead) {
+            // CPU won
+            roundWinner = 'cpu';
             cpuScore += diff;
             msg = `<span style="color:#f44336">CPU Won Round.</span><br>CPU Deadwood: ${cDead}<br>Your Deadwood: ${pDead}<br>CPU gets +${diff}`;
             if(cDead === 0) { cpuScore += 25; msg += "<br>GIN BONUS +25"; }
         } else {
+            // Player won (undercut)
+            roundWinner = 'player';
             playerScore += (diff + 25);
             msg = `<span style="color:#4caf50">You Undercut CPU!</span><br>You get +${diff+25}`;
         }
     }
 
+    // Save Hand Stats
+    appStats.hPlayed++;
+    if(roundWinner === 'player') appStats.hWon++;
+    saveStats();
+
     updateScoreUI();
     renderTable(true); 
 
     if(playerScore >= TARGET_SCORE || cpuScore >= TARGET_SCORE) {
+        // Match Over
+        appStats.mPlayed++;
+        if(playerScore >= TARGET_SCORE) appStats.mWon++;
+        saveStats();
+
         let winnerName = playerScore >= TARGET_SCORE ? "YOU" : "COMPUTER";
         let winVerb = playerScore >= TARGET_SCORE ? "WIN" : "WINS"; 
         
@@ -1027,6 +1072,9 @@ function roundEnd(reason) {
      showOverlay("Round Drawn", reason, false);
      isRoundOver = true;
      btnKnock.style.display = 'none';
+     // Draws do not count as a win/loss for either side in stats
+     appStats.hPlayed++;
+     saveStats();
 }
 
 /* --- RENDERER --- */
