@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gin-rummy-v1';
+const CACHE_NAME = 'gin-rummy-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

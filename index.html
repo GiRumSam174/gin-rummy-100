@@ -48,7 +48,6 @@
     align-items: center;
     box-sizing: border-box;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    /* Base font size */
     font-size: 1rem;
     z-index: 10;
     flex-shrink: 0;
@@ -62,7 +61,6 @@
       transform: translateX(-50%);
       font-weight: bold; 
       color: #ffca28; 
-      /* TITLE SIZE: 1.1rem (Requested) */
       font-size: 1.1rem; 
       cursor: pointer;
       white-space: nowrap;
@@ -75,7 +73,6 @@
       color: white;
       display: flex;
       gap: 5px;
-      /* SCORES SIZE: 0.9rem (Requested) */
       font-size: 0.9rem;
   }
   .score-text span { color: white; }
@@ -344,6 +341,7 @@
       display: flex;
       gap: 10px;
       justify-content: center;
+      flex-wrap: wrap; 
   }
   
   #toast {
@@ -385,14 +383,19 @@
 <div id="info-overlay">
     <div class="status-box" style="position: relative; transform: none; min-width: 280px;">
         <h2>GIN RUMMY</h2>
-        <div style="color: #ffca28; margin-bottom: 5px; font-weight: bold;">v6.0 PWA</div>
+        <div style="color: #ffca28; margin-bottom: 5px; font-weight: bold;">v6.2 PWA</div>
         <div class="info-text">
             <strong>Knock:</strong> 10 points or less deadwood.<br>
             <strong>Gin:</strong> 0 deadwood (+25 Bonus).<br>
             <strong>Undercut:</strong> If opponent has equal or lower deadwood, they win (+25 Bonus).
         </div>
         <div class="modal-actions">
-            <button onclick="confirmReset(); closeInfoModal()" style="display:inline-block; font-size:0.8rem; padding:8px 15px;">New Game</button>
+            <button onclick="confirmReset(); closeInfoModal()" style="display:inline-block; font-size:0.8rem; padding:8px 15px; min-width: auto;">New Game</button>
+            
+            <a href="https://www.buymeacoffee.com/classmarks" target="_blank" style="text-decoration:none;">
+                <button style="display:inline-block; font-size:0.8rem; padding:8px 15px; background:#FFDD00; color:#000000; box-shadow:0 4px #c2a900; min-width: auto;">☕ Buy Me A Coffee</button>
+            </a>
+
             <button class="secondary" onclick="closeInfoModal()" style="display:inline-block; font-size:0.8rem; padding:8px 15px;">Close</button>
         </div>
     </div>
@@ -496,7 +499,6 @@ function initRound() {
 
 /* --- EASTER EGG LOGIC --- */
 function triggerEasterEgg() {
-    // Open the Info Modal
     elInfoOverlay.style.display = 'flex';
 }
 
@@ -567,7 +569,6 @@ function organizeHand(handInput) {
         let currentLow = current[current.length - 1]; 
         let nextHigh = next[0]; 
 
-        // FIX: Ensure BOTH are valid runs (same suit) before merging
         let isCurrentRun = current.every(c => c.suit === currentLow.suit);
         let isNextRun = next.every(c => c.suit === nextHigh.suit);
 
@@ -1105,6 +1106,7 @@ function createCardDiv(card) {
 }
 
 resetGame();
+
 // --- SERVICE WORKER REGISTRATION ---
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
