@@ -359,29 +359,33 @@
     white-space: nowrap; 
   }
 
-  /* --- TABLET / IPAD TWEAKS --- */
-  /* Applies when screen width is at least 768px (iPad portrait width) */
+  /* --- TABLET / IPAD TWEAKS (UPDATED) --- */
   @media (min-width: 768px) and (min-height: 600px) {
     :root {
-      /* Increase card size by ~40% */
-      --card-width: 100px;  
-      --card-height: 140px; 
+      /* EVEN BIGGER CARDS */
+      --card-width: 120px;  
+      --card-height: 168px; 
       
-      /* Adjust overlap so cards don't float too far apart */
-      --card-overlap: -60px; 
+      /* Tighter overlap for bigger cards */
+      --card-overlap: -75px; 
     }
 
-    /* Make the text/suits on the bigger cards readable */
-    .card { font-size: 1.5rem; }
-    .card .suit-center { font-size: 2.8rem; }
-    .card .corner { font-size: 1rem; }
+    /* Scale up fonts for readability */
+    .card { font-size: 1.8rem; }
+    .card .suit-center { font-size: 3.5rem; }
+    .card .corner { font-size: 1.2rem; }
 
-    /* Adjust container heights to fit taller cards */
-    .hand { height: 160px; }
-    .table-center { height: 180px; gap: 100px; }
+    /* Adjust container heights */
+    .hand { height: 190px; }
+    .table-center { height: 220px; gap: 120px; }
     
-    /* Make the game area max-width larger so the hand spreads out nicely */
+    /* Make the game area max-width larger */
     #game-area { max-width: 1200px; }
+
+    /* FIX: Move the Knock button UP so it doesn't cover the cards */
+    #controls {
+        bottom: 250px; 
+    }
   }
 </style>
 </head>
@@ -408,7 +412,7 @@
 <div id="info-overlay">
     <div class="status-box" style="position: relative; transform: none; min-width: 280px;">
         <h2>GIN RUMMY</h2>
-        <div style="color: #ffca28; margin-bottom: 5px; font-weight: bold;">v6.4 PWA</div>
+        <div style="color: #ffca28; margin-bottom: 5px; font-weight: bold;">v6.5 PWA</div>
         <div class="info-text">
             <strong>Knock:</strong> 10 points or less deadwood.<br>
             <strong>Gin:</strong> 0 deadwood (+25 Bonus).<br>
