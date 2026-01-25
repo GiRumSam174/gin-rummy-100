@@ -6,6 +6,8 @@ To install on your device, go to https://girumsam174.github.io/gin-rummy-100/ th
 
 My testing environment is an older Samsung smartphone, so your mileage may vary, but it should work on iOS as well.
 
+Click on the title to see your game stats.
+
 <a href="https://www.buymeacoffee.com/classmarks">
   <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="180" />
 </a>
