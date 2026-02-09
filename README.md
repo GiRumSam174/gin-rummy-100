@@ -2,7 +2,7 @@ An easy to play, offline version of Gin Rummy that plays well on your smartphone
 
 No adds and no special permission requirements! 
 
-To install on your device, go to https://girumsam174.github.io/gin-rummy-100/ then go to your browser's menu and click add to homescreen.
+To play offline and install on your device, go to https://girumsam174.github.io/gin-rummy-100/ then go to your browser's menu and click add to homescreen.
 
 My testing environment is an older Samsung smartphone, so your mileage may vary, but it should work on iOS as well.
 
